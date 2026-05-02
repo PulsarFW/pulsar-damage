@@ -5,7 +5,7 @@ description("Pulsar Framework Damage Script")
 client_script("@pulsar-core/exports/cl_error.lua")
 client_script("@pulsar-pwnzor/client/check.lua")
 
-version("1.0.1")
+version "1.0.2"
 
 client_scripts({
   "client/**/*.lua",
