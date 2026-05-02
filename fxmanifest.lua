@@ -5,16 +5,16 @@ description("Pulsar Framework Damage Script")
 client_script("@pulsar-core/exports/cl_error.lua")
 client_script("@pulsar-pwnzor/client/check.lua")
 
-version("2.0.0")
+version("1.0.1")
 
 client_scripts({
-	"client/**/*.lua",
+  "client/**/*.lua",
 })
 
 server_scripts({
-	"server/**/*.lua",
+  "server/**/*.lua",
 })
 
 shared_scripts({
-	"shared/**/*.lua",
+  "shared/**/*.lua",
 })
