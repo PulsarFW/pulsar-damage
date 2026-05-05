@@ -12,18 +12,14 @@ jobs:
   create-release:
     runs-on: ubuntu-latest
     steps:
-      - name: Install zip
-        run: sudo apt install zip
-
       - name: Get latest code
         uses: actions/checkout@v4
 
       - name: Bundle files
         run: |
-          mkdir -p ./temp/pulsar-damage
-          cp ./{README.md,fxmanifest.lua} ./temp/pulsar-damage
-          cp -r ./{client,server,shared} ./temp/pulsar-damage
-          cd ./temp && zip -r ../pulsar-damage.zip ./pulsar-damage
+          mkdir -p staging/pulsar-damage
+          rsync -a --exclude='.github' --exclude='node_modules' --exclude='staging' . staging/pulsar-damage/
+          cd staging && zip -r ../pulsar-damage.zip pulsar-damage/
 
       - name: Create release
         uses: softprops/action-gh-release@v2
