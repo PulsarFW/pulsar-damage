@@ -7,6 +7,7 @@ AddEventHandler('onClientResourceStart', function(resource)
             if s then
                 LocalPlayer.state.deadData = {}
                 exports['pulsar-damage']:ReductionsReset()
+                exports['pulsar-hud']:ClearBuffs()
             end
             exports['pulsar-damage']:Revive()
         end)
@@ -23,7 +24,7 @@ AddEventHandler('onClientResourceStart', function(resource)
             if s then
                 exports['pulsar-hud']:ApplyBuff("godmode")
             else
-                exports['pulsar-hud']:RemoveBuffType("godmode")
+                exports['pulsar-hud']:RemoveBuff("godmode")
             end
         end)
     end
@@ -37,9 +38,9 @@ RegisterNetEvent("Characters:Client:Spawned", function()
 
     _reductions = LocalPlayer.state.Character:GetData("HPReductions") or 0
     if _reductions > 0 then
-        exports['pulsar-hud']:ApplyUniqueBuff("weakness", -1)
+        exports['pulsar-hud']:ApplyBuff("weakness", -1)
     else
-        exports['pulsar-hud']:RemoveBuffType("weakness")
+        exports['pulsar-hud']:RemoveBuff("weakness")
     end
     exports['pulsar-damage']:CalculateMaxHp()
 
@@ -67,7 +68,7 @@ RegisterNetEvent("Characters:Client:Logout", function()
         LocalPlayer.state:set("releaseTime", false, true)
     end
 
-    exports['pulsar-hud']:RemoveBuffType("weakness")
+    exports['pulsar-hud']:RemoveBuff("weakness")
 end)
 
 RegisterNetEvent('UI:Client:Reset', function(apps)
@@ -75,23 +76,23 @@ RegisterNetEvent('UI:Client:Reset', function(apps)
         exports['pulsar-hud']:DeathTextsHide()
         exports['pulsar-hud']:Dead(false)
         if _reductions > 0 then
-            exports['pulsar-hud']:ApplyUniqueBuff("weakness", -1)
+            exports['pulsar-hud']:ApplyBuff("weakness", -1)
         else
-            exports['pulsar-hud']:RemoveBuffType("weakness")
+            exports['pulsar-hud']:RemoveBuff("weakness")
         end
     end
 end)
 
 exports("ReductionsIncrease", function(amt)
     _reductions += amt
-    exports['pulsar-hud']:ApplyUniqueBuff("weakness", -1)
+    exports['pulsar-hud']:ApplyBuff("weakness", -1)
     exports["pulsar-core"]:ServerCallback("Damage:SyncReductions", _reductions)
     exports['pulsar-damage']:CalculateMaxHp()
 end)
 
 exports("ReductionsReset", function()
     _reductions = 0
-    exports['pulsar-hud']:RemoveBuffType("weakness")
+    exports['pulsar-hud']:RemoveBuff("weakness")
     exports["pulsar-core"]:ServerCallback("Damage:SyncReductions", _reductions)
     exports['pulsar-damage']:CalculateMaxHp()
 end)
@@ -181,9 +182,9 @@ exports("Revive", function(fieldTreat)
     end
 
     if _reductions > 0 then
-        exports['pulsar-hud']:ApplyUniqueBuff("weakness", -1)
+        exports['pulsar-hud']:ApplyBuff("weakness", -1)
     else
-        exports['pulsar-hud']:RemoveBuffType("weakness")
+        exports['pulsar-hud']:RemoveBuff("weakness")
     end
 
     local mod = 0.25 * _reductions
